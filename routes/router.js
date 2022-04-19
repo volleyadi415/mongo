@@ -12,7 +12,7 @@ router.get("/filter",controller.filter)
 
 router.get("/sort",controller.sort)
 
-router.delete("/delete",controller.delete)
+//router.delete("/delete",controller.delete)
 
 router.put("/update",controller.update)
 
