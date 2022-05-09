@@ -28,28 +28,38 @@ class Controller {
     static async insert(req, res) {
         try {
             MongoClient.connect(connectionString, { useUnifiedTopology: true }, (err, db) => {
-                if (err) return console.error(err)
-                console.log('Connected to Database')
-                
-
-                var dbo = db.db("mydb");
+                if (err) throw err;
+                var dbo = db.db("test");
                 var myobj = [
-                    { name: 'adi', salary:'5' },
-                    { name: 'Ben',salary:'8'  },
-                    { name: 'Willia',salary:'10'  },
-                    { name: 'Chuck',salary:'7'  },
-                    { name: 'Viola',salary:'9'  }
+                    { name: 'John', address: 'Highway 71' , salary:2000 },
+                    { name: 'Peter', address: 'Lowstreet 4' , salary:25000 },
+                    { name: 'Amy', address: 'Apple st 652' , salary:26000},
+                    { name: 'Hannah', address: 'Mountain 21', salary:23000 },
+                    { name: 'Michael', address: 'Valley 345' , salary:26000},
+                    { name: 'Sandy', address: 'Ocean blvd 2' , salary:21000},
+                    { name: 'Betty', address: 'Green Grass 1' , salary:27000},
+                    { name: 'Richard', address: 'Sky st 331' , salary:22000},
+                    { name: 'Susan', address: 'One way 98' , salary:29000},
+                    { name: 'Vicky', address: 'Yellow Garden 2' , salary:29000},
+                    { name: 'Ben', address: 'Park Lane 38', salary:40000 },
+                    { name: 'William', address: 'Central st 954' , salary:20000},
+                    { name: 'Chuck', address: 'Main Road 989', salary:20500 },
+                    { name: 'Viola', address: 'Sideway 1633', salary:30000 },
+                
                 ];
-                dbo.collection("customers").insertMany(myobj, function (err, result) {
+                
+                dbo.collection("customers").insertMany(myobj, async function (err, result) {
+                    const data = await dbo.collection("customers").createIndex({ name: 1 });
+                    console.log(`Index created: ${data}`);
                     if (err) throw err;
                     console.log("Number of documents inserted: " + result.insertedCount);
                     res.send(result)
 
-                    
+                    db.close();
                 });
             });
         } catch (e) {
-
+            console.log(e)
         }
     }
     static async select(req, res) {
